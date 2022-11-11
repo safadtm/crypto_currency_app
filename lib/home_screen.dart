@@ -15,6 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isDarkMode = AppTheme.isDarkModeEnabled;
 
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   void getUserDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -34,10 +36,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
       appBar: AppBar(
-        title: const Text(
+        leading: IconButton(
+          onPressed: () {
+            _globalKey.currentState!.openDrawer();
+          },
+          icon: Icon(
+            Icons.menu,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        elevation: 0,
+        title: Text(
           "CryptoCurrency App",
+          style: TextStyle(
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
       ),
       drawer: Drawer(
@@ -117,6 +134,80 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ],
+        ),
+      ),
+
+      /////////////////////////////////////BODY//////////////
+
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 20,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefix: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  hintText: "Search for a coin",
+                ),
+              ),
+            ),
+
+            //////////
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return coinDetails();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget coinDetails() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: ListTile(
+        leading: Image.network(
+            "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"),
+        title: Text(
+          "Bitcoin\nBTC",
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        trailing: RichText(
+          textAlign: TextAlign.end,
+          text: TextSpan(
+            text: "Rs.18791.38\n",
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+            children: [
+              TextSpan(
+                text: "3.02%",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
