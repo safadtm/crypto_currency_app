@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto_currency_app/coin_details.dart';
+import 'package:crypto_currency_app/coin_graph_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -244,6 +245,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CoinGraphScreen(
+                coinId: model.id,
+                coinName: model.name,
+              ),
+            ),
+          );
+        },
         leading: SizedBox(
           height: 50,
           width: 50,
