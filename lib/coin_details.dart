@@ -3,7 +3,7 @@ class CoinDetailsModel {
   late String symbol;
   late String name;
   late String image;
-  late int currentPrice;
+  late double currentPrice;
   late double priceChangePercentage24h;
 
   CoinDetailsModel({
@@ -20,7 +20,7 @@ class CoinDetailsModel {
     symbol = json['symbol'];
     name = json['name'];
     image = json['image'];
-    currentPrice = json['current_price'];
+    currentPrice = json['current_price'].toDouble();
     priceChangePercentage24h = json['price_change_percentage_24h'];
   }
 }

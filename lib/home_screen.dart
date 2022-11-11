@@ -1,7 +1,12 @@
-import 'package:crypto_currency_app/app_theme.dart';
-import 'package:crypto_currency_app/update_profile_screen.dart';
+import 'dart:convert';
+
+import 'package:crypto_currency_app/coin_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:crypto_currency_app/app_theme.dart';
+import 'package:crypto_currency_app/update_profile_screen.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,10 +35,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  ///////
+  Future<List<CoinDetailsModel>> getCoinsDetails() async {
+    Uri uri = Uri.parse(url);
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List coinsData = json.decode(response.body);
+
+      List<CoinDetailsModel> data =
+          coinsData.map((e) => CoinDetailsModel.fromJson(e)).toList();
+
+      return data;
+    } else {
+      return <CoinDetailsModel>[];
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getUserDetails();
+    getCoinsDetails();
   }
 
   @override
@@ -165,10 +189,22 @@ class _HomeScreenState extends State<HomeScreen> {
             //////////
 
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return coinDetails();
+              child: FutureBuilder(
+                future: getCoinsDetails(),
+                builder:
+                    (context, AsyncSnapshot<List<CoinDetailsModel>> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return coinDetails(snapshot.data![index]);
+                      },
+                    );
+                  } else {
+                    return const Center(
+                      child: Text("Error Occured"),
+                    );
+                  }
                 },
               ),
             ),
@@ -178,15 +214,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget coinDetails() {
+  Widget coinDetails(CoinDetailsModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
-        leading: Image.network(
-            "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"),
+        leading: SizedBox(
+          height: 50,
+          width: 50,
+          child: Image.network(model.image),
+        ),
         title: Text(
-          "Bitcoin\nBTC",
-          style: TextStyle(
+          "${model.name}\n${model.symbol}",
+          style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w500,
           ),
@@ -194,16 +233,16 @@ class _HomeScreenState extends State<HomeScreen> {
         trailing: RichText(
           textAlign: TextAlign.end,
           text: TextSpan(
-            text: "Rs.18791.38\n",
-            style: TextStyle(
+            text: "Rs.${model.currentPrice}\n",
+            style: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w500,
               color: Colors.black,
             ),
             children: [
               TextSpan(
-                text: "3.02%",
-                style: TextStyle(
+                text: "${model.priceChangePercentage24h}",
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
                   color: Colors.red,
