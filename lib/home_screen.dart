@@ -250,8 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => CoinGraphScreen(
-                coinId: model.id,
-                coinName: model.name,
+                coinDetailsModel: model,
               ),
             ),
           );
