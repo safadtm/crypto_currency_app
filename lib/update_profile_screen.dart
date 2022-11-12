@@ -2,11 +2,18 @@ import 'package:crypto_currency_app/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
+class UpdateProfileScreen extends StatefulWidget {
   UpdateProfileScreen({super.key});
 
+  @override
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
+
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController ageController = TextEditingController();
 
   Future<void> saveData(String key, String value) async {
@@ -37,6 +44,7 @@ class UpdateProfileScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               saveUserDetails();
+              Navigator.pop(context);
             },
             child: const Text("Save Details"),
           ),

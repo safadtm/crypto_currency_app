@@ -205,12 +205,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         coinDetailsList = searchResult;
                       });
                     },
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
                     decoration: InputDecoration(
-                      prefix: const Icon(Icons.search),
-                      border: OutlineInputBorder(
+                      prefix: Icon(
+                        Icons.search,
+                        color: isDarkMode ? Colors.white : null,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: isDarkMode ? Colors.white : Colors.grey,
+                        ),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       hintText: "Search for a coin",
+                      hintStyle: TextStyle(
+                        color: isDarkMode ? Colors.white : null,
+                      ),
                     ),
                   ),
                 ),
@@ -219,8 +231,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 Expanded(
                   child: coinDetailsList.isEmpty
-                      ? const Center(
-                          child: Text("No Coin Found"),
+                      ? Center(
+                          child: Text(
+                            "No Coin Found",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                          ),
                         )
                       : ListView.builder(
                           itemCount: coinDetailsList.length,
@@ -262,19 +279,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text(
           "${model.name}\n${model.symbol}",
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w500,
+            color: isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         trailing: RichText(
           textAlign: TextAlign.end,
           text: TextSpan(
             text: "Rs.${model.currentPrice}\n",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w500,
-              color: Colors.black,
+              color: isDarkMode ? Colors.white : Colors.black,
             ),
             children: [
               TextSpan(

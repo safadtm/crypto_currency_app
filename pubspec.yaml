@@ -33,8 +33,13 @@ dependencies:
   fl_chart: ^0.55.2
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.10.0
   http: ^0.13.5
   shared_preferences: ^2.0.15
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/bitcoin_logo.png"
 
 dev_dependencies:
   flutter_lints: ^2.0.0
