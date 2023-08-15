@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Crypto Currency App',
+      title: 'CryptoPulse360',
       theme: ThemeData(),
       home: const HomeScreen(),
     );

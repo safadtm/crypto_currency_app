@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: isDarkMode ? Colors.black : Colors.white,
         elevation: 0,
         title: Text(
-          "CryptoCurrency App",
+          "CryptoPulse360",
           style: TextStyle(
             color: isDarkMode ? Colors.white : Colors.black,
           ),
